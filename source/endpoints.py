@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pony.orm import commit
 
 from database import Schedule, Client, Trainer
@@ -11,17 +11,26 @@ app = FastAPI()
 
 @app.get("/schedule/")
 async def get_schedule(id: UUID):
-    return Schedule.get(id=id)
+    schedule = Schedule.get(id=id)
+    if not schedule:
+        raise HTTPException(status_code=404, detail="Schedule not found")
+    return schedule
 
 
 @app.get("/client/")
 async def get_client(id: UUID):
-    return Client.get(id=id)
+    client = Client.get(id=id)
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
+    return client
 
 
 @app.get("/trainer/")
 async def get_trainer(id: UUID):
-    return Trainer.get(id=id)
+    trainer = Trainer.get(id=id)
+    if not trainer:
+        raise HTTPException(status_code=404, detail="Trainer not found")
+    return trainer
 
 
 @app.post("/schedule/")
