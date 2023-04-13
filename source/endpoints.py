@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from pony.orm import commit, select
 
 from database import Schedule, Client, Trainer
-from schema import PostSchedule, UpdateSchedule, PostTrainer, PostClient
+from schema import PostSchedule, UpdateSchedule, UpdateTrainer, UpdateClient, PostTrainer, PostClient
 
 app = FastAPI()
 
@@ -67,6 +67,22 @@ async def update_schedule(schedule: UpdateSchedule):
     schedule_.set(**schedule.dict(exclude_unset=True))
     commit()
     return schedule_
+
+
+@app.put("/trainer/")
+async def update_trainer(trainer: UpdateTrainer):
+    trainer_ = Trainer.get(id=trainer.id)
+    trainer_.set(**trainer.dict(exclude_unset=True))
+    commit()
+    return trainer_
+
+
+@app.put("/client/")
+async def update_client(client: UpdateClient):
+    client_ = Client.get(id=client.id)
+    client_.set(**client.dict(exclude_unset=True))
+    commit()
+    return client_
 
 
 @app.get("/schedules/")

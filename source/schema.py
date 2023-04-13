@@ -43,3 +43,19 @@ class UpdateSchedule(BaseModel):
     end_date: Optional[datetime]
     client_id: UUID
     trainer_id: UUID
+
+
+class UpdateClient(BaseModel):
+    id: UUID
+    start_date: Optional[datetime]
+    end_date: Optional[datetime]
+    client_id: UUID
+    trainer_id: UUID
+
+
+class UpdateTrainer(BaseModel):
+    id: UUID
+    start_date: Optional[datetime]
+    end_date: Optional[datetime]
+    client_id: UUID
+    trainer_id: UUID
