@@ -1,6 +1,6 @@
-from uuid import uuid4, UUID
+from uuid import UUID
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pony.orm import commit
 
 from database import Schedule, Client, Trainer
@@ -20,7 +20,7 @@ async def get_client(id: UUID):
 
 
 @app.get("/trainer/")
-async def get_trainer(id:UUID):
+async def get_trainer(id: UUID):
     return Trainer.get(id=id)
 
 
@@ -35,6 +35,7 @@ async def create_schedule(schedule: PostSchedule):
     commit()
     return schedule.id
 
+
 @app.post("/client/")
 async def create_client(client: PostClient):
     data = client.dict()
@@ -42,12 +43,14 @@ async def create_client(client: PostClient):
     commit()
     return client.id
 
+
 @app.post("/trainer/")
 async def create_trainer(trainer: PostTrainer):
     data = trainer.dict()
     trainer = Trainer(**data)
     commit()
     return trainer.id
+
 
 @app.put("/schedule/")
 async def update_schedule(schedule: UpdateSchedule):
