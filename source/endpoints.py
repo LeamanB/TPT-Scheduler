@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from fastapi import FastAPI, HTTPException
-from pony.orm import commit
+from pony.orm import commit, select
 
 from database import Schedule, Client, Trainer
 from schema import PostSchedule, UpdateSchedule, PostTrainer, PostClient
@@ -70,11 +70,18 @@ async def update_schedule(schedule: UpdateSchedule):
 
 
 @app.get("/schedules/")
-async def get_lists_of_schedule(ids: list[str]):
-    return Schedule.get(id=id)
+async def get_schedules(skip: int = 0, limit: int = 10):
+    schedules = select(i for i in Schedule).order_by(Schedule.id).limit(limit, offset=skip)[:]
+    return [schedule.to_dict() for schedule in schedules]
 
 
 @app.get("/clients/")
-async def get_lists_of_clients(ids: list[str]):
-    return Client.get(id=id)
-    # todo
+async def get_clients(skip: int = 0, limit: int = 10):
+    clients = select(i for i in Client).order_by(Client.id).limit(limit, offset=skip)[:]
+    return [client.to_dict() for client in clients]
+
+
+@app.get("/trainers/")
+async def get_trainers(skip: int = 0, limit: int = 10):
+    trainers = select(i for i in Trainer).order_by(Client.id).limit(limit, offset=skip)[:]
+    return [trainer.to_dict() for trainer in trainers]
