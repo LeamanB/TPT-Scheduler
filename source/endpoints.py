@@ -66,7 +66,9 @@ async def update_schedule(schedule: UpdateSchedule):
     schedule_ = Schedule.get(id=schedule.id)
     schedule_.set(**schedule.dict(exclude_unset=True))
     commit()
-    return schedule_
+    if not schedule:
+        raise HTTPException(status_code=404, detail="Schedule not found")
+    return schedule_.to_dict()
 
 
 @app.put("/trainer/")
@@ -74,15 +76,18 @@ async def update_trainer(trainer: UpdateTrainer):
     trainer_ = Trainer.get(id=trainer.id)
     trainer_.set(**trainer.dict(exclude_unset=True))
     commit()
-    return trainer_
+    if not trainer:
+        raise HTTPException(status_code=404, detail="Trainer not found")
+    return trainer_.to_dict()
 
 
 @app.put("/client/")
 async def update_client(client: UpdateClient):
     client_ = Client.get(id=client.id)
+    if not client_:
+        raise HTTPException(status_code=404, detail="Client not found")
     client_.set(**client.dict(exclude_unset=True))
-    commit()
-    return client_
+    return client_.to_dict()
 
 
 @app.get("/schedules/")
