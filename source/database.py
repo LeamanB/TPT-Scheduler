@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from pony.orm import Database, Required, Set, PrimaryKey
+from pony.orm import Database, Required, Set, PrimaryKey, Optional
 
 db = Database()
 db.bind(provider='sqlite', filename='database.sqlite', create_db=True)
@@ -17,6 +17,7 @@ class Schedule(db.Entity):
 
 class Client(db.Entity):
     id = PrimaryKey(UUID, auto=True)
+    active = Optional(bool, default=True)
     first_name = Required(str)
     last_name = Required(str)
     schedules = Set("Schedule")
@@ -24,8 +25,10 @@ class Client(db.Entity):
 
 class Trainer(db.Entity):
     id = PrimaryKey(UUID, auto=True)
+    active = Optional(bool, default=True)
     first_name = Required(str)
     last_name = Required(str)
     schedules = Set("Schedule")
+
 
 db.generate_mapping(create_tables=True)

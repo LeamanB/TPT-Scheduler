@@ -47,11 +47,13 @@ class UpdateSchedule(BaseModel):
 
 class UpdateClient(BaseModel):
     id: UUID
+    active: Optional[bool]
     first_name: Optional[str]
     last_name: Optional[str]
 
 
 class UpdateTrainer(BaseModel):
     id: UUID
+    active: Optional[bool]
     first_name: Optional[str]
     last_name: Optional[str]
