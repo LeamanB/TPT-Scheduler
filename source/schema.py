@@ -5,21 +5,6 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
-class GetSchedule(BaseModel):
-    start_date: datetime
-    end_date: datetime
-
-
-class GetClient(BaseModel):
-    first_name: str
-    last_name: str
-
-
-class GetTrainer(BaseModel):
-    first_name: str
-    last_name: str
-
-
 class PostSchedule(BaseModel):
     start_date: datetime
     end_date: datetime
